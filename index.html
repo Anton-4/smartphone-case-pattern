@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="520" height="1104" >
+    Your browser does not support the HTML5 canvas tag.</canvas>
+
+<script>
+    let c = document.getElementById("myCanvas");
+    let ctx = c.getContext("2d");
+    ctx.lineWidth = 6;
+
+    const width=520;
+    const height=1104;
+
+    const max = 25;
+    for (i = 0; i < max; i++) {
+        const offsetSize = 90;
+        const offset = i * offsetSize;
+
+        const arcSize = width/2.5 + offset/4;
+        ctx.beginPath();
+        ctx.arc(width / 2, -400 + offset, arcSize, 0, Math.PI);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(width / 2, (offsetSize*max*1.3) - offset-280, arcSize, Math.PI, Math.PI*2);
+        ctx.stroke()
+    }
+
+    function drawTan(startX, startY, xScale, yScale, mirror){
+        ctx.beginPath();
+        for(x=-1.4; x<=1.4; x+=0.01){
+            let funX = (mirror) ? -x: x;
+            const y = Math.tan(funX);
+            if (x === 0) {
+                ctx.moveTo(startX + xScale*x,startY + yScale*y);
+            }
+
+            ctx.lineTo(startX + xScale*x,startY + yScale*y);
+        }
+        ctx.stroke()
+    }
+
+    function drawSin(startX, startY, xScale, yScale, mirror, rotate){
+        ctx.beginPath();
+        let xCoord = 0;
+        let yCoord = 0;
+        for(x=-1.4; x<=30; x+=0.2){
+            let funX = (mirror) ? -x: x;
+            const y = Math.sin(funX);
+            xCoord = startX + xScale*x;
+            yCoord = startY + yScale*y;
+
+            if (rotate){
+                const temp = xCoord;
+                xCoord = yCoord;
+                yCoord = temp;
+            }
+
+            if (x === 0) {
+                ctx.moveTo(xCoord, yCoord);
+            }
+
+            ctx.lineTo(xCoord, yCoord);
+        }
+        if (!rotate && mirror){
+            ctx.lineTo(xCoord, yCoord-100);
+            ctx.lineTo(xCoord-5000, yCoord-100);
+        } else if (rotate && mirror) {
+            ctx.lineTo(xCoord - 5000, yCoord);
+            ctx.lineTo(xCoord - 5000, yCoord + 5000);
+        }else if (rotate && !mirror){
+            ctx.lineTo(xCoord + 5000, yCoord);
+            ctx.lineTo(xCoord + 5000, yCoord + 5000);
+        }else{
+            ctx.lineTo(xCoord, yCoord+100);
+            ctx.lineTo(xCoord-5000, yCoord+100);
+        }
+
+
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function drawDiamond(x, y, size, stretch, lineWidth){
+        ctx.lineWidth = lineWidth;
+        ctx.beginPath();
+
+        ctx.moveTo(x-size/2,y + size * stretch);
+
+        ctx.lineTo(x, y);
+        ctx.lineTo(x + size/2, y + size * stretch);
+        ctx.lineTo(x, y + size * (stretch*2));
+
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    const startX = (width/2)-1350;
+    const startY = height/2-366;
+
+    const tanCurveOffset = 100;
+    for(let i=0; i<=50; i+=1){
+        const yScale = 640;
+        const xScale = 650;
+        //drawTan(startX + i*tanCurveOffset*0.9, startY, xScale, yScale, false);
+    }
+
+
+    for(let i=0; i<=50; i+=1){
+        const yScale = 640;
+        const xScale = 650;
+        //drawTan(startX + i*tanCurveOffset*0.5, startY, xScale, yScale, true);
+    }
+
+    const lineWidth = 4;
+    const xScale = 50;
+    const yScale = 4;
+    const xOffset = 5;
+    const yOffset = 30;
+
+    //horizontal line
+    /*drawSin(xOffset, yOffset, xScale, yScale, true, false);
+    drawSin(xOffset, height-yOffset, xScale, yScale, false, false);
+
+    //vertical lines
+    drawSin(xOffset, yOffset, xScale, yScale, true, true);
+    drawSin(xOffset, width-yOffset, xScale, yScale, false, true);*/
+
+
+
+</script>
+
+</body>
+</html>
